@@ -48,7 +48,7 @@ jobs:
         vsce package
         
     - name: Upload VSIX artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: kros-log-viewer-${{ matrix.node-version }}.vsix
         path: '*.vsix'
@@ -109,12 +109,9 @@ jobs:
         VSCE_PAT: ${{ secrets.VSCE_PAT }}
         
     - name: Create GitHub Release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        files: '*.vsix'
         body: |
           ## Changes in this Release
           
@@ -125,13 +122,5 @@ jobs:
           You can install this version from the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/items?itemName=kros.kros-log-viewer) or download the VSIX file from this release.
         draft: false
         prerelease: false
-        
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./kros-log-viewer-*.vsix
-        asset_name: kros-log-viewer-${{ github.ref_name }}.vsix
-        asset_content_type: application/zip 
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
