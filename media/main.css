@@ -305,6 +305,13 @@ body {
     background: rgba(156, 39, 176, 0.05);
 }
 
+/* Continuation lines (multi-line logs without inner timestamp) */
+.log-entry.continuation {
+    background: rgba(128, 128, 128, 0.03);
+    border-left: 2px solid rgba(128, 128, 128, 0.2);
+    padding-left: 12px;
+}
+
 /* Special styling for ASCII art and drawing characters */
 .log-entry.ascii-art {
     font-family: 'Courier New', monospace;

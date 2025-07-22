@@ -70,77 +70,8 @@ export class LogParser {
             entries.push(currentEntry);
         }
 
-        // Return entries without additional processing that was causing incorrect grouping
+        // Return entries without cleaning inner timestamps - keep them visible
         return entries;
-    }
-
-    private static processEntries(entries: LogEntry[]): LogEntry[] {
-        const processedEntries: LogEntry[] = [];
-        
-        for (let i = 0; i < entries.length; i++) {
-            const entry = entries[i];
-            
-            // Check for inner log timestamps in message
-            const innerTimestamp = this.extractInnerTimestamp(entry.message);
-            if (innerTimestamp && this.isDuplicateTimestamp(entry.timestamp, innerTimestamp)) {
-                // Remove inner timestamp from message
-                entry.message = this.removeInnerTimestamp(entry.message);
-                entry.isDuplicate = true;
-            }
-            
-            // Try to group with previous entry
-            const lastEntry = processedEntries[processedEntries.length - 1];
-            if (lastEntry && this.shouldGroupEntries(lastEntry, entry)) {
-                // Group with previous entry
-                if (!lastEntry.isGrouped) {
-                    lastEntry.isGrouped = true;
-                    lastEntry.groupedEntries = []; // Start with empty array, don't include the entry itself
-                }
-                lastEntry.groupedEntries!.push(entry);
-                lastEntry.message += '\n' + entry.message;
-                lastEntry.raw += '\n' + entry.raw;
-            } else {
-                processedEntries.push(entry);
-            }
-        }
-        
-        return processedEntries;
-    }
-
-    private static extractInnerTimestamp(message: string): string | null {
-        const innerMatch = message.match(/^\[(\d{2}:\d{2}:\d{2})\s+\w+\]/);
-        return innerMatch ? innerMatch[1] : null;
-    }
-
-    private static isDuplicateTimestamp(outerTimestamp: string, innerTimestamp: string): boolean {
-        const outerTime = outerTimestamp.substring(11, 19); // Extract HH:mm:ss
-        return Math.abs(this.timeToSeconds(outerTime) - this.timeToSeconds(innerTimestamp)) <= 1;
-    }
-
-    private static timeToSeconds(time: string): number {
-        const [hours, minutes, seconds] = time.split(':').map(Number);
-        return hours * 3600 + minutes * 60 + seconds;
-    }
-
-    private static removeInnerTimestamp(message: string): string {
-        return message.replace(/^\[(\d{2}:\d{2}:\d{2})\s+\w+\]\s*/, '');
-    }
-
-    private static shouldGroupEntries(prev: LogEntry, current: LogEntry): boolean {
-        // Group if same timestamp, level, and category within 1 second
-        if (prev.category === current.category && 
-            prev.level === current.level &&
-            Math.abs(this.timeToSeconds(prev.timestamp.substring(11, 19)) - 
-                    this.timeToSeconds(current.timestamp.substring(11, 19))) <= 1) {
-            return true;
-        }
-
-        // Also group continuation lines (no timestamp)
-        if (!current.timestamp) {
-            return true;
-        }
-
-        return false;
     }
 
     public static formatTimestamp(timestamp: string): string {
