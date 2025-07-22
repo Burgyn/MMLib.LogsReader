@@ -1,0 +1,282 @@
+body {
+    font-family: var(--vscode-font-family);
+    font-size: var(--vscode-font-size);
+    color: var(--vscode-foreground);
+    background: var(--vscode-background);
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: var(--container-padding);
+    box-sizing: border-box;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--vscode-widget-border);
+}
+
+.header h1 {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--vscode-foreground);
+}
+
+.file-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 0.9em;
+    color: var(--vscode-descriptionForeground);
+}
+
+.file-info #file-name {
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: flex-end;
+    margin-bottom: 15px;
+    padding: 15px;
+    background: var(--vscode-panel-background);
+    border-radius: 5px;
+    border: 1px solid var(--vscode-widget-border);
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 150px;
+}
+
+.filter-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: var(--vscode-foreground);
+}
+
+.filter-group select {
+    min-height: 80px;
+    padding: 5px;
+    background: var(--vscode-input-background);
+    color: var(--vscode-input-foreground);
+    border: 1px solid var(--vscode-input-border);
+    border-radius: 3px;
+    font-family: var(--vscode-font-family);
+}
+
+.filter-actions {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.filter-actions button {
+    padding: 8px 16px;
+    background: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: var(--vscode-font-family);
+    white-space: nowrap;
+}
+
+.filter-actions button:hover {
+    background: var(--vscode-button-hoverBackground);
+}
+
+.log-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+    color: var(--vscode-descriptionForeground);
+}
+
+.log-container {
+    flex: 1;
+    overflow: hidden;
+    border: 1px solid var(--vscode-widget-border);
+    border-radius: 3px;
+    position: relative;
+}
+
+#log-entries {
+    height: 100%;
+    overflow-y: auto;
+    font-family: var(--vscode-editor-font-family, monospace);
+    font-size: var(--vscode-editor-font-size, 13px);
+    line-height: 1.4;
+}
+
+.log-entry {
+    display: flex;
+    align-items: flex-start;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--vscode-panel-border);
+    transition: background-color 0.1s;
+}
+
+.log-entry:hover {
+    background: var(--vscode-list-hoverBackground);
+}
+
+.log-entry.level-err {
+    border-left: 3px solid #f44336;
+    background: rgba(244, 67, 54, 0.05);
+}
+
+.log-entry.level-wrn {
+    border-left: 3px solid #ff9800;
+    background: rgba(255, 152, 0, 0.05);
+}
+
+.log-entry.level-inf {
+    border-left: 3px solid #2196f3;
+    background: rgba(33, 150, 243, 0.05);
+}
+
+.log-entry.level-dbg {
+    border-left: 3px solid #4caf50;
+    background: rgba(76, 175, 80, 0.05);
+}
+
+.log-entry.level-vrb {
+    border-left: 3px solid #9c27b0;
+    background: rgba(156, 39, 176, 0.05);
+}
+
+.log-timestamp {
+    color: var(--vscode-descriptionForeground);
+    font-size: 0.85em;
+    white-space: nowrap;
+    margin-right: 10px;
+    width: 140px;
+    flex-shrink: 0;
+}
+
+.log-level {
+    font-weight: bold;
+    white-space: nowrap;
+    margin-right: 10px;
+    width: 40px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.log-level.level-err { color: #f44336; }
+.log-level.level-wrn { color: #ff9800; }
+.log-level.level-inf { color: #2196f3; }
+.log-level.level-dbg { color: #4caf50; }
+.log-level.level-vrb { color: #9c27b0; }
+
+.log-category {
+    color: var(--vscode-symbolIcon-namespaceForeground);
+    background: var(--vscode-badge-background);
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 0.8em;
+    margin-right: 10px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.log-message {
+    flex: 1;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    color: var(--vscode-foreground);
+}
+
+.log-line-number {
+    color: var(--vscode-descriptionForeground);
+    font-size: 0.8em;
+    margin-right: 10px;
+    width: 50px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.loading {
+    display: none;
+    text-align: center;
+    padding: 20px;
+    color: var(--vscode-descriptionForeground);
+}
+
+.loading.show {
+    display: block;
+}
+
+/* Scrollbars */
+#log-entries::-webkit-scrollbar {
+    width: 8px;
+}
+
+#log-entries::-webkit-scrollbar-track {
+    background: var(--vscode-scrollbarSlider-background);
+}
+
+#log-entries::-webkit-scrollbar-thumb {
+    background: var(--vscode-scrollbarSlider-hoverBackground);
+    border-radius: 4px;
+}
+
+#log-entries::-webkit-scrollbar-thumb:hover {
+    background: var(--vscode-scrollbarSlider-activeBackground);
+}
+
+/* Search functionality */
+.search-container {
+    display: flex;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
+.search-container input {
+    flex: 1;
+    padding: 8px;
+    background: var(--vscode-input-background);
+    color: var(--vscode-input-foreground);
+    border: 1px solid var(--vscode-input-border);
+    border-radius: 3px;
+    font-family: var(--vscode-font-family);
+}
+
+.search-container button {
+    padding: 8px 16px;
+    background: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: var(--vscode-font-family);
+}
+
+.search-container button:hover {
+    background: var(--vscode-button-hoverBackground);
+}
+
+/* Highlight search matches */
+.highlight {
+    background-color: var(--vscode-editor-findMatchHighlightBackground);
+    color: var(--vscode-editor-findMatchForeground);
+    padding: 1px 2px;
+    border-radius: 2px;
+} 

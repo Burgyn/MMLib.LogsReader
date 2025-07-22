@@ -1,0 +1,52 @@
+{
+  "name": "kros-log-viewer",
+  "displayName": "KROS Log Viewer",
+  "description": "Enhanced log viewer for KROS application logs with filtering and visualization",
+  "version": "1.0.0",
+  "publisher": "kros",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other",
+    "Visualization"
+  ],
+  "keywords": [
+    "log",
+    "viewer",
+    "kros",
+    "debugging",
+    "analysis"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "krosLogViewer.showLog",
+        "title": "Show KROS Log",
+        "category": "KROS"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "krosLogViewer.showLog",
+          "when": "resourceExtname == .log",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "16.x",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {}
+} 

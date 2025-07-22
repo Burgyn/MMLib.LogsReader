@@ -1,0 +1,16 @@
+2025-07-21 13:08:34.239 +00:00 [INF] Starting application...
+2025-07-21 13:08:34.385 +00:00 [INF] [Database] Connecting to database server
+2025-07-21 13:08:34.535 +00:00 [DBG] [Database] Connection string: Server=localhost;Database=TestDb
+2025-07-21 13:08:35.120 +00:00 [INF] [Database] Database connection established successfully
+2025-07-21 13:08:35.234 +00:00 [INF] [Auth] Loading authentication providers
+2025-07-21 13:08:35.567 +00:00 [DBG] [Auth] Found 3 authentication providers: OAuth2, BasicAuth, ApiKey
+2025-07-21 13:08:36.123 +00:00 [WRN] [Auth] OAuth2 configuration is missing AuthUrl parameter
+2025-07-21 13:08:36.234 +00:00 [ERR] [Auth] Failed to initialize OAuth2 provider
+System.ArgumentException: AuthUrl is required
+   at AuthProvider.OAuth2.Initialize()
+   at AuthManager.LoadProviders()
+2025-07-21 13:08:36.456 +00:00 [INF] Application started successfully
+2025-07-21 13:08:37.789 +00:00 [VRB] [Request] Processing GET /api/users
+2025-07-21 13:08:37.890 +00:00 [DBG] [Request] User authentication check passed
+2025-07-21 13:08:38.123 +00:00 [INF] [Request] Returning 125 users from database
+2025-07-21 13:08:38.456 +00:00 [VRB] Processing completed in 667ms 

@@ -1,0 +1,10 @@
+:root {
+	--container-padding: 20px;
+	--input-padding: 8px;
+	--input-margin: 5px 0;
+	--vscode-font-family: var(--vscode-font-family);
+	--vscode-font-size: var(--vscode-font-size);
+	--vscode-font-weight: var(--vscode-font-weight);
+	--vscode-background: var(--vscode-editor-background);
+	--vscode-foreground: var(--vscode-editor-foreground);
+} 
