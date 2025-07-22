@@ -2,7 +2,7 @@
   "name": "kros-log-viewer",
   "displayName": "KROS Log Viewer",
   "description": "Enhanced Visual Studio Code extension for viewing and analyzing KROS application logs with advanced filtering and visualization capabilities.",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "publisher": "kros",
   "author": {
     "name": "KROS a.s.",
