@@ -91,8 +91,50 @@ The repository includes GitHub Actions that will automatically:
    The GitHub Action will automatically:
    - Build the extension
    - Run quality checks
-   - Publish to marketplace
+   - **If VSCE_PAT is set**: Publish to marketplace
+   - **If VSCE_PAT is missing**: Skip publish but create GitHub release with VSIX file
    - Create GitHub release with VSIX file
+
+### Detailed GitHub Secrets Setup
+
+1. **Create Personal Access Token**
+   - Go to [Azure DevOps](https://dev.azure.com/)
+   - Click your profile picture → Personal Access Tokens
+   - Click "New Token"
+   - Name: "VS Code Marketplace Publishing"
+   - Scopes: Select **"Marketplace (manage)"** only
+   - Click "Create" and **save the token immediately**
+
+2. **Add Secret to GitHub Repository**
+   - Go to your GitHub repository
+   - Settings → Security → Secrets and variables → Actions
+   - Click "New repository secret"
+   - Name: `VSCE_PAT`
+   - Secret: Paste your Personal Access Token
+   - Click "Add secret"
+
+3. **Verify Setup**
+   ```bash
+   # Create a test tag to trigger the action
+   git tag v1.0.1
+   git push origin v1.0.1
+   
+   # Check GitHub Actions tab for build status
+   ```
+
+### What Happens During Automated Publishing
+
+**✅ With VSCE_PAT configured:**
+- Builds extension
+- Publishes to VS Code Marketplace automatically
+- Creates GitHub release with VSIX file
+- Release notes indicate marketplace publication
+
+**⚠️ Without VSCE_PAT configured:**
+- Builds extension successfully
+- Skips marketplace publishing (with helpful message)
+- Creates GitHub release with VSIX file for manual installation
+- Release notes indicate manual installation required
 
 ## Version Management
 

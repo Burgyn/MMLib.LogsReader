@@ -100,11 +100,25 @@ jobs:
     - name: Compile TypeScript
       run: npm run compile
       
-    - name: Package and Publish
+    - name: Package extension
       run: |
         npm install -g @vscode/vsce
         vsce package
-        vsce publish -p ${{ secrets.VSCE_PAT }}
+      
+    - name: Publish to Marketplace
+      if: env.VSCE_PAT != ''
+      run: vsce publish -p ${{ secrets.VSCE_PAT }}
+      env:
+        VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        
+    - name: Skip Publish (no PAT)
+      if: env.VSCE_PAT == ''
+      run: |
+        echo "⚠️  Skipping marketplace publish: VSCE_PAT secret not configured"
+        echo "📦  VSIX package was created successfully and will be attached to the release"
+        echo "🔧  To enable automatic publishing:"
+        echo "     1. Create Personal Access Token at https://dev.azure.com/"
+        echo "     2. Add VSCE_PAT secret in GitHub repository settings"
       env:
         VSCE_PAT: ${{ secrets.VSCE_PAT }}
         
@@ -120,7 +134,10 @@ jobs:
           ## Installation
           
           You can install this version from the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/items?itemName=kros.kros-log-viewer) or download the VSIX file from this release.
+          
+          ${{ env.VSCE_PAT == '' && '⚠️ **Note**: This release was not automatically published to the marketplace. Download the VSIX file below and install manually.' || '✅ **Published**: This version is available on the VS Code Marketplace.' }}
         draft: false
         prerelease: false
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        VSCE_PAT: ${{ secrets.VSCE_PAT }} 
