@@ -140,6 +140,10 @@ export class KrosLogViewerPanel {
     }
 
     private _applyFilter(selectedCategories: string[], selectedLevels: string[]) {
+        console.log('Backend filter - Categories:', selectedCategories);
+        console.log('Backend filter - Levels:', selectedLevels);
+        console.log('Total log entries:', this._logEntries.length);
+        
         this._filteredEntries = this._logEntries.filter(entry => {
             const categoryMatch = selectedCategories.length === 0 || 
                                  selectedCategories.includes('ALL') ||
@@ -149,8 +153,14 @@ export class KrosLogViewerPanel {
                               selectedLevels.includes('ALL') ||
                               selectedLevels.includes(entry.level);
 
-            return categoryMatch && levelMatch;
+            const matches = categoryMatch && levelMatch;
+            if (!matches) {
+                console.log(`Entry ${entry.lineNumber} filtered out - Category: ${entry.category || 'MAIN'}, Level: ${entry.level}`);
+            }
+            return matches;
         });
+
+        console.log('Filtered entries:', this._filteredEntries.length);
 
         this._panel.webview.postMessage({
             command: 'updateEntries',
@@ -200,7 +210,7 @@ export class KrosLogViewerPanel {
             <html lang="en">
             <head>
                 <meta charset="UTF-8">
-                <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource}; script-src 'nonce-${nonce}';">
+                <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource} 'unsafe-inline'; script-src 'nonce-${nonce}';">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <link href="${styleResetUri}" rel="stylesheet">
                 <link href="${styleVSCodeUri}" rel="stylesheet">
@@ -218,24 +228,50 @@ export class KrosLogViewerPanel {
                     </header>
                     
                     <div class="filters">
-                        <div class="filter-group">
-                            <label for="category-filter">Categories:</label>
-                            <select id="category-filter" multiple>
-                                <option value="ALL" selected>All Categories</option>
-                            </select>
-                        </div>
-                        
-                        <div class="filter-group">
-                            <label for="level-filter">Log Levels:</label>
-                            <select id="level-filter" multiple>
-                                <option value="ALL" selected>All Levels</option>
-                            </select>
-                        </div>
-                        
-                        <div class="filter-actions">
-                            <button id="apply-filter">Apply Filters</button>
-                            <button id="clear-filter">Clear All</button>
-                            <button id="refresh">Refresh</button>
+                        <div class="filter-row">
+                            <div class="filter-dropdown">
+                                <label>Categories:</label>
+                                <div class="dropdown">
+                                    <button class="dropdown-toggle" id="category-toggle">
+                                        <span class="selection-text">All Categories</span>
+                                        <span class="dropdown-arrow">▼</span>
+                                    </button>
+                                    <div class="dropdown-menu" id="category-dropdown">
+                                        <div class="dropdown-header">
+                                            <button class="select-all-btn" data-target="categories">All</button>
+                                            <button class="select-none-btn" data-target="categories">None</button>
+                                        </div>
+                                        <div class="dropdown-options" id="category-options">
+                                            <!-- Categories will be populated here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="filter-dropdown">
+                                <label>Log Levels:</label>
+                                <div class="dropdown">
+                                    <button class="dropdown-toggle" id="level-toggle">
+                                        <span class="selection-text">All Levels</span>
+                                        <span class="dropdown-arrow">▼</span>
+                                    </button>
+                                    <div class="dropdown-menu" id="level-dropdown">
+                                        <div class="dropdown-header">
+                                            <button class="select-all-btn" data-target="levels">All</button>
+                                            <button class="select-none-btn" data-target="levels">None</button>
+                                        </div>
+                                        <div class="dropdown-options" id="level-options">
+                                            <!-- Levels will be populated here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="filter-actions">
+                                <button id="apply-filter" class="btn-primary">Apply</button>
+                                <button id="clear-filter" class="btn-secondary">Reset</button>
+                                <button id="refresh" class="btn-secondary">Refresh</button>
+                            </div>
                         </div>
                     </div>
                     
